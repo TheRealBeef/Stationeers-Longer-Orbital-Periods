@@ -7,17 +7,17 @@ namespace Orbital_Period
 {
 	
 	// Fixes to SSAO
-	[HarmonyPatch(typeof(CursorManager), "AssignSun")]
+	[HarmonyPatch(typeof(CursorManager), "Initialize")]
     public class OrbitalPatcher
     {
         static void Prefix()
         {
-            // Current multiplier is 10
-            // Orbital Period of 0.1 will be 20 minutes
-            // Orbital period of 1.0 will be 3 hours 20 minutes
-            // Orbital Period of 2.0 will be 6 hours 40 minutes
+            // Current multiplier is 20
+            // Orbital Period of 0.1 will be 40 minutes
+            // Orbital period of 1.0 will be 6 hours 40 minutes
+            // Orbital Period of 2.0 will be 13 hours 40 minutes
 
-            float BaseOrbitalPeriodMultiplier = 10.0f;
+            float BaseOrbitalPeriodMultiplier = 20.0f;
 
             BeefPeriod.OrbitalPeriod.AppendLog("Applying Orbital Period Settings");
 
