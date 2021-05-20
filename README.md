@@ -29,7 +29,7 @@ However, it could interfere with other plugin based mods that alter the orbital 
 ## Installation ##
 
     Download the latest release https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods/releases/latest
-    Install BepInEx to your Stationeers folder in SteamApps/Common/Stationeers/
+    Drop BepInEx to your Stationeers folder in SteamApps/Common/Stationeers/
     Run Stationeers once to complete the BepInEx installation
     Drop LongerOrbitalPeriods.dll to the Stationeers/BepInEx/plugins folder
     Enjoy
