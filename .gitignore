@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/LongerOrbitalPeriods/libs/UnityEngine.dll
+/LongerOrbitalPeriods/libs/UnityEngine.CoreModule.dll
+/LongerOrbitalPeriods/libs/BepInEx.Harmony.dll
+/LongerOrbitalPeriods/libs/BepInEx.dll
+/LongerOrbitalPeriods/libs/Assembly-CSharp.dll
+/LongerOrbitalPeriods/libs/Assembly-CSharp-firstpass.dll
+/LongerOrbitalPeriods/libs/0Harmony.dll
