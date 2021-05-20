@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LongerOrbitalPeriods
 {
-    public class Orb_Period
+    public class OrbPeriod
     {
 
         [BepInPlugin("org.bepinex.plugins.orbitalperiod", "Beef's Longer Orbital Periods", "0.1")]
