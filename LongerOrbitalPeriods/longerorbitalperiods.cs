@@ -3,40 +3,37 @@ using HarmonyLib;
 using BepInEx;
 using UnityEngine;
 
-namespace LongerOrbitalPeriods
+namespace BeefPeriod
 {
-    public class OrbPeriod
+   
+    [BepInPlugin("org.bepinex.plugins.orbitalperiod", "Beef's Longer Orbital Periods", "0.1")]
+    [BepInProcess("rocketstation.exe")]
+    public class init : BaseUnityPlugin
     {
-
-        [BepInPlugin("org.bepinex.plugins.orbitalperiod", "Beef's Longer Orbital Periods", "0.1")]
-        [BepInProcess("rocketstation.exe")]
-        public class init : BaseUnityPlugin
+        void Awake()
         {
-            void Awake()
-            {
-                OrbitalPeriod.Awake();
-            }
+            OrbitalPeriod.Awake();
+        }
+    }
+
+    public class OrbitalPeriod
+    {
+        // Variable Definitions
+
+        public static void AppendLog(string logdetails)
+        {
+            UnityEngine.Debug.Log("Beef's Longer Orbital Periods - " + logdetails);
         }
 
-        public class OrbitalPeriod
+        // Awake is called once when both the game and the plug-in are loaded
+        public static void Awake()
         {
-            // Variable Definitions
+            //Initialize();
 
-            public static void AppendLog(string logdetails)
-            {
-                UnityEngine.Debug.Log("Beef's Longer Orbital Periods - " + logdetails);
-            }
-
-            // Awake is called once when both the game and the plug-in are loaded
-            public static void Awake()
-            {
-                //Initialize();
-
-                AppendLog("Initialized");
-                var harmony = new Harmony("org.bepinex.plugins.orbitalperiod");
-                harmony.PatchAll();
-                AppendLog("Patched with Harmony");
-            }
+            AppendLog("Initialized");
+            var harmony = new Harmony("org.bepinex.plugins.orbitalperiod");
+            harmony.PatchAll();
+            AppendLog("Patched with Harmony");
         }
     }
 
