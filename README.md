@@ -28,10 +28,10 @@ However, it could interfere with other plugin based mods that alter the orbital 
 
 ## Installation ##
 
-    Download the latest release https://github.com/TheRealBeef/Stationeers-Shader-Fixes/releases/latest
+    Download the latest release https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods/releases/latest
     Install BepInEx to your Stationeers folder in SteamApps/Common/Stationeers/
     Run Stationeers once to complete the BepInEx installation
-    Install ShaderFixes.dll to the Stationeers/BepInEx/plugins folder
+    Install LongerOrbitalPeriods.dll to the Stationeers/BepInEx/plugins folder
     Enjoy
 
 ## Contributions ##
