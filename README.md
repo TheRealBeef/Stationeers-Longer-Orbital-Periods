@@ -1,40 +1,62 @@
-Beef's Longer Orbital Period<a name="TOP"></a>
-===================
+# Beef's Longer Orbital Periods
 
-Increases the (real world) orbital period per slider setting:
-Orbital Period of 0.1 will be 40 minutes - Original was 2 minutes
-Orbital period of 1.0 will be 6 hours 40 minutes - Original was 20 minutes
-Orbital Period of 2.0 will be 13 hours 20 minutes - Original was 40 minutes
+<p align="center" width="100%">
+<img alt="Icon" src="./About/thumb.png" width="45%" />
+</p>
 
-## Completed features ##
+This plugin gives you control over the length of the day/night cycle in Stationeers. You can set it really fast, really slow, however you want.
 
-  - Makes Orbital Periods 20x longer
-  
-## Planned Features ##
+It works as a server-side only mod, not requiring clients to have it installed. The mod automatically disables its patch if it detects you're connecting to someone else's world.
 
-#### Short term: ####
-    - Nothing yet
-  
-#### Long term: ####
-    - Increase range of slider
+## Requirements
 
-## Compatibility ##
+**WARNING:** This is a StationeersLaunchPad Plugin Mod. It requires BepInEx to be installed with the StationeersLaunchPad plugin.
 
-This mod is compatible with existing saves and will not corrupt them when you install or uninstall the mod 
-However, you may find yourself struggling if your current save is heavily reliant on solar energy and the night
-just began...
+See: [https://github.com/StationeersLaunchPad/StationeersLaunchPad](https://github.com/StationeersLaunchPad/StationeersLaunchPad)
 
-However, it could interfere with other plugin based mods that alter the orbital period
+## Installation
 
-## Installation ##
+1.  Ensure you have BepInEx and StationeersLaunchPad installed.
+2.  Install it from the workshop. Alternatively: Place the dll file into your `/BepInEx/plugins/` folder.
 
-    Download the latest release https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods/releases/latest
-    Drop BepInEx to your Stationeers folder in SteamApps/Common/Stationeers/
-    Run Stationeers once to complete the BepInEx installation
-    Drop LongerOrbitalPeriods.dll to the Stationeers/BepInEx/plugins folder
-    Enjoy
+## Usage
 
-## Contributions ##
+You can configure the multiplier in the StationeersLaunchPad config, or you can set it in-game using the console. Changes made via the console are automatically saved to the config file and will persist between game sessions.
 
-    Please, feel free to contribute either in issues or in pull requests, or to fork 
-    this repo for your own take on Stationeers visuals.
+Press `F3` to open the console and use the `time` command.
+
+### Commands
+
+- To see current settings:
+  ```
+  time
+  ```
+- To set a new multiplier:
+  ```
+  time <multiplier>
+  ```
+
+### Examples
+
+* `time 0.5` (A fast 10-minute day)
+* `time 1.0` (Default 20-minute day)
+* `time 3.0` (A 1-hour day - mod default)
+* `time 6.0` (A 2-hour day)
+
+**Note:** This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
+
+## Changelog
+
+>### Version 2.0.0
+>- Complete rewrite to update to current stationeers
+>- Added a console command system (`time [multiplier]`).
+>- Console command changes are automatically saved to the config file.
+
+## Roadmap
+
+Nothing for now, about as complete as it needs to be
+
+## Source Code
+
+The source code is available on GitHub:
+[https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods](https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods)

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Name>Beef's Longer Orbital Periods</Name>
+    <Author>TheRealBeef</Author>
+    <Version>2.0.0</Version>
+
+    <Description>
+        [h1]Beef's Longer Orbital Periods[/h1]
+        [b]WARNING:[/b] This is a StationeersLaunchPad Plugin Mod. It requires BepInEx to be installed with the StationeersLaunchPad plugin.
+        See: https://github.com/StationeersLaunchPad/StationeersLaunchPad
+
+        This plugin gives you control over the length of the day/night cycle in Stationeers. You can set it really fast, really slow, however you want.
+
+        If you don't want to update the value in StationeersLaunchPad config, it also supports writing values with the console, these are saved to the config file and so don't need to be updated again every time you load the game.
+
+        It should work as a serverside-only mod, not requiring clients to have it installed. Automatically disables its patch if it detects you're connecting to someone elses world to reduce possible sheninangans.
+
+        Press F3 to open the console and use the [b]time[/b] command.
+        - To see current settings: [b]time[/b]
+        - To set a new multiplier: [b]time &lt;multiplier&gt;[/b]
+
+        Settings are automatically saved to your config file and persist between game sessions.
+
+        [b]Examples:[/b]
+        - [b]time 0.5[/b] (10-minute day)
+        - [b]time 1.0[/b] (20-minute day)
+        - [b]time 3.0[/b] (1-hour day - mod default)
+        - [b]time 6.0[/b] (A 2-hour day)
+
+        [b]Note:[/b] This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
+
+        Source Code: https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods
+    </Description>
+
+    <ChangeLog>
+        2.0.0:
+        - Complete rewrite to update to current Stationeers.
+        - Implemented console command system to make it easier since we don't have a slider anymore.
+    </ChangeLog>
+
+
+    <Tags>
+        <Tag>QoL</Tag>
+        <Tag>BepInEx</Tag>
+        <Tag>StationeersLaunchPad</Tag>
+    </Tags>
+
+    <Dependencies />
+
+    <LoadBefore />
+    <LoadAfter />
+    <InGameDescription>
+        <![CDATA[
+<size=30><color=#ffa500>Longer Orbital Periods</color></size>
+<b>WARNING:</b> <color=#ff0000>This is a StationeersLaunchPad Plugin Mod. It requires BepInEx to be installed.</color>
+See: https://github.com/StationeersLaunchPad/StationeersLaunchPad
+
+This plugin gives you control over the length of the day/night cycle in Stationeers. You can set it really fast, really slow, however you want.
+If you don't want to update the value in StationeersLaunchPad config, it also supports writing values with the console, these are saved to the config file and so don't need to be updated again.
+
+Press F3 to open the console and use the <b>time</b> command.
+- To see current settings: <b>time</b>
+- To set a new multiplier: <b>time &lt;multiplier&gt;</b>
+
+Settings are automatically saved to your config file and persist between game sessions.
+
+<b>Examples:</b>
+- <b>time 0.5</b> (10-minute day)
+- <b>time 1.0</b> (20-minute day)
+- <b>time 3.0</b> (1-hour day - mod default)
+- <b>time 6.0</b> (A 2-hour day)
+
+<b>Note:</b> This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
+]]>
+    </InGameDescription>
+</ModMetadata>
