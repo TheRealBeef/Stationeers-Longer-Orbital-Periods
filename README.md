@@ -54,7 +54,8 @@ Press `F3` to open the console and use the `time` command.
 
 ## Roadmap
 
-Nothing for now, about as complete as it needs to be
+- [ ] Add config option for impacting plant time cycles
+- [ ] Add additional commands for "real world" solar days of worlds
 
 ## Source Code
 
