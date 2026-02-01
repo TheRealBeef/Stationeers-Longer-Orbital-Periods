@@ -20,7 +20,7 @@ namespace BeefsLongerOrbitalPeriods
             // Don't apply on clients or weird things could happen ...
             if (NetworkManager.NetworkRole == NetworkRole.Client) return;
 
-            float multiplier = BeefsLongerOrbitalPeriodsPlugin.OrbitalPeriodMultiplier.Value;
+            float multiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
             Console.WriteLine($"[BeefsLongerOrbitalPeriods] Applying modification from command. Multiplier: {multiplier}x");
 
             FieldInfo timeScaleField = typeof(OrbitalSimulation).GetField("_timeScale", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -54,7 +54,7 @@ namespace BeefsLongerOrbitalPeriods
                 return;
             }
 
-            float multiplier = BeefsLongerOrbitalPeriodsPlugin.OrbitalPeriodMultiplier.Value;
+            float multiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
             Console.WriteLine($"[BeefsLongerOrbitalPeriods] Applying Timescale - Multiplier: {multiplier}x");
 
             FieldInfo timeScaleField = typeof(OrbitalSimulation).GetField("_timeScale", BindingFlags.NonPublic | BindingFlags.Instance);

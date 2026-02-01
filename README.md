@@ -27,35 +27,62 @@ Press `F3` to open the console and use the `time` command.
 
 ### Commands
 
-- To see current settings:
-  ```
-  time
-  ```
-- To set a new multiplier:
-  ```
-  time <multiplier>
-  ```
+- `time` - Show current settings
+- `time <multiplier>` - Set a custom multiplier
+- `time real-moon` - 29.53x (~10 hours)
+- `time real-mars` - 1.027x (~20.5 min)
+- `time real-europa` - 3.551x (~1 hr 11 min)
+- `time real-venus` - 116.75x (~39 hours)
+- `time real-mimas` - 0.942x (~18.8 min)
 
 ### Examples
 
-* `time 0.5` (A fast 10-minute day)
-* `time 1.0` (Default 20-minute day)
-* `time 3.0` (A 1-hour day - mod default)
-* `time 6.0` (A 2-hour day)
+| Multiplier | Day Length |
+|------------|------------|
+| `time 0.5` | 10 minutes |
+| `time 1.0` | 20 minutes (vanilla) |
+| `time 3.0` | 1 hour (mod default) |
+| `time 6.0` | 2 hours |
 
-**Note:** This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
+## Plant Scaling Options
+
+By default, the mod does not affect plant growth or light/darkness requirements.
+
+### Growth Speed Scaling
+Three modes are available:
+- Disabled - Vanilla plant growth speed
+- UseDayLength - Plants grow slower by the same multiplier as day length
+- Custom - Use a separate multiplier just for plant growth (29.53x plant growth speed would be just silly)
+
+### Light/Dark Requirement Scaling
+
+When enabled, plant light and darkness requirements per day are multiplied by the day length multiplier. Plants will need proportionally more light/dark time per longer day cycle.
+
+### Commands
+
+- `plants` - Show current plant settings
+- `plants growth off` - Disable growth scaling (vanilla)
+- `plants growth on` - Scale growth by day length
+- `plants growth <value>` - Use custom growth multiplier
+- `plants light on|off` - Toggle light/dark requirement scaling
+
+## Notes
+- This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
+- The orbital period change is server-side only - clients do not need the mod for day/night cycle changes (at least 90% sure).
+- Plant scaling changes are currently applied (to the best of my knowledge) server-side only. If plant growth is not syncing correctly in multiplayer with plant scaling enabled, clients may also need the mod installed.
 
 ## Changelog
 
+>### Version 3.0.0:
+> - Add config options to menu
+> - Add presets for moon, mars, europa, venus, and mimas
+> - Add plant growth scaling (this can be set independently of day length if desired)
+> - Add plant light/darkness scaling option
+
 >### Version 2.0.0
->- Complete rewrite to update to current stationeers
->- Added a console command system (`time [multiplier]`).
->- Console command changes are automatically saved to the config file.
-
-## Roadmap
-
-- [ ] Add config option for impacting plant time cycles
-- [ ] Add additional commands for "real world" solar days of worlds
+>- Complete rewrite to update to current Stationeers
+>- Added a console command system (`time [multiplier]`)
+>- Console command changes are automatically saved to the config file
 
 ## Source Code
 

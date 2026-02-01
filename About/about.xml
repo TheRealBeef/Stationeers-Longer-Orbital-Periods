@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Name>Beef's Longer Orbital Periods</Name>
     <Author>TheRealBeef</Author>
-    <Version>2.0.0</Version>
+    <Version>3.0.0</Version>
 
     <Description>
         [h1]Beef's Longer Orbital Periods[/h1]
@@ -23,9 +23,19 @@
 
         [b]Examples:[/b]
         - [b]time 0.5[/b] (10-minute day)
-        - [b]time 1.0[/b] (20-minute day)
+        - [b]time 1.0[/b] (20-minute day - game default)
         - [b]time 3.0[/b] (1-hour day - mod default)
         - [b]time 6.0[/b] (A 2-hour day)
+
+        [b]Commands[b]
+
+        - `time` - Show current settings
+        - `time [i]multiplier[i]` - Set a custom multiplier
+        - `time real-moon` - 29.53x (~10 hours)
+        - `time real-mars` - 1.027x (~20.5 min)
+        - `time real-europa` - 3.551x (~1 hr 11 min)
+        - `time real-venus` - 116.75x (~39 hours)
+        - `time real-mimas` - 0.942x (~18.8 min)
 
         [b]Note:[/b] This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
 
@@ -33,6 +43,12 @@
     </Description>
 
     <ChangeLog>
+        3.0.0:
+        - Add config options to menu
+        - Add presets for moon, mars, europa, venus, and mimas
+        - Add plant growth scaling (this can be set independently of day length if desired)
+        - Add plant light/darkness scaling option
+
         2.0.0:
         - Complete rewrite to update to current Stationeers.
         - Implemented console command system to make it easier since we don't have a slider anymore.
@@ -46,6 +62,7 @@
     </Tags>
 
     <Dependencies />
+    <WorkshopHandle>3570623022</WorkshopHandle>
 
     <LoadBefore />
     <LoadAfter />
@@ -66,7 +83,7 @@ Settings are automatically saved to your config file and persist between game se
 
 <b>Examples:</b>
 - <b>time 0.5</b> (10-minute day)
-- <b>time 1.0</b> (20-minute day)
+- <b>time 1.0</b> (20-minute day - game default)
 - <b>time 3.0</b> (1-hour day - mod default)
 - <b>time 6.0</b> (A 2-hour day)
 
