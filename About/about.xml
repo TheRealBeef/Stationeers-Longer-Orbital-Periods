@@ -17,7 +17,7 @@
 
         Press F3 to open the console and use the [b]time[/b] command.
         - To see current settings: [b]time[/b]
-        - To set a new multiplier: [b]time &lt;multiplier&gt;[/b]
+        - To set a new multiplier: [b]time [i]multiplier[/i][/b]
 
         Settings are automatically saved to your config file and persist between game sessions.
 
@@ -27,15 +27,34 @@
         - [b]time 3.0[/b] (1-hour day - mod default)
         - [b]time 6.0[/b] (A 2-hour day)
 
-        [b]Commands[b]
+        [b]Time Commands[/b]
 
-        - `time` - Show current settings
-        - `time [i]multiplier[i]` - Set a custom multiplier
-        - `time real-moon` - 29.53x (~10 hours)
-        - `time real-mars` - 1.027x (~20.5 min)
-        - `time real-europa` - 3.551x (~1 hr 11 min)
-        - `time real-venus` - 116.75x (~39 hours)
-        - `time real-mimas` - 0.942x (~18.8 min)
+        - [b]time[/b] - Show current settings
+        - [b]time [i]multiplier[/i][/b] - Set a custom multiplier
+        - [b]time real-moon[/b] - 29.53x (~10 hours)
+        - [b]time real-mars[/b] - 1.027x (~20.5 min)
+        - [b]time real-europa[/b] - 3.551x (~1 hr 11 min)
+        - [b]time real-venus[/b] - 116.75x (~39 hours)
+        - [b]time real-mimas[/b] - 0.942x (~18.8 min)
+
+        [h2]Plant Scaling[/h2]
+
+        By default, the mod does not affect plant growth or light/darkness requirements.
+
+        [b]Growth Speed Scaling[/b] - Three modes are available:
+        - [b]Disabled[/b] - Vanilla plant growth speed
+        - [b]UseDayLength[/b] - Plants grow slower by the same multiplier as day length
+        - [b]Custom[/b] - Use a separate multiplier just for plant growth
+
+        [b]Light/Dark Requirement Scaling[/b] - When enabled, plant light and darkness requirements per day are multiplied by the day length multiplier.
+
+        [b]Plant Commands[/b]
+
+        - [b]plants[/b] - Show current plant settings
+        - [b]plants growth off[/b] - Disable growth scaling (vanilla)
+        - [b]plants growth on[/b] - Scale growth by day length
+        - [b]plants growth [i]value[/i][/b] - Use custom growth multiplier
+        - [b]plants light on|off[/b] - Toggle light/dark requirement scaling
 
         [b]Note:[/b] This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
 
@@ -73,19 +92,30 @@
 See: https://github.com/StationeersLaunchPad/StationeersLaunchPad
 
 This plugin gives you control over the length of the day/night cycle in Stationeers. You can set it really fast, really slow, however you want.
-If you don't want to update the value in StationeersLaunchPad config, it also supports writing values with the console, these are saved to the config file and so don't need to be updated again.
 
 Press F3 to open the console and use the <b>time</b> command.
-- To see current settings: <b>time</b>
-- To set a new multiplier: <b>time &lt;multiplier&gt;</b>
 
-Settings are automatically saved to your config file and persist between game sessions.
+<b>Time Commands:</b>
+- <b>time</b> - Show current settings
+- <b>time <i>multiplier</i></b> - Set a custom multiplier
+- <b>time real-moon</b> - 29.53x (~10 hours)
+- <b>time real-mars</b> - 1.027x (~20.5 min)
+- <b>time real-europa</b> - 3.551x (~1 hr 11 min)
+- <b>time real-venus</b> - 116.75x (~39 hours)
+- <b>time real-mimas</b> - 0.942x (~18.8 min)
 
 <b>Examples:</b>
 - <b>time 0.5</b> (10-minute day)
-- <b>time 1.0</b> (20-minute day - game default)
+- <b>time 1.0</b> (20-minute day - vanilla)
 - <b>time 3.0</b> (1-hour day - mod default)
-- <b>time 6.0</b> (A 2-hour day)
+- <b>time 6.0</b> (2-hour day)
+
+<b>Plant Commands:</b>
+- <b>plants</b> - Show current plant settings
+- <b>plants growth off</b> - Disable growth scaling (vanilla)
+- <b>plants growth on</b> - Scale growth by day length
+- <b>plants growth <i>value</i></b> - Use custom growth multiplier
+- <b>plants light on|off</b> - Toggle light/dark requirement scaling
 
 <b>Note:</b> This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
 ]]>
