@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Name>Beef's Longer Orbital Periods</Name>
     <Author>TheRealBeef</Author>
-    <Version>3.0.0</Version>
+    <Version>3.0.1</Version>
 
     <Description>
         [h1]Beef's Longer Orbital Periods[/h1]
@@ -62,6 +62,9 @@
     </Description>
 
     <ChangeLog>
+        3.0.1:
+        - Updated to fix console commands errors with Combustion Deep Miner update.
+
         3.0.0:
         - Add config options to menu
         - Add presets for moon, mars, europa, venus, and mimas

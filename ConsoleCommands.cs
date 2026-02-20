@@ -65,7 +65,7 @@ namespace BeefsLongerOrbitalPeriods
                     }
 
                     // Unknown argument
-                    ConsoleWindow.Print($"Unknown argument: {arg}", ConsoleColor.Red, false, false);
+                    ConsoleWindow.Print($"Unknown argument: {arg}", ConsoleColor.Red, false, false, false);
                     ShowUsage();
                     return false;
                 }
@@ -150,12 +150,12 @@ namespace BeefsLongerOrbitalPeriods
                     }
                 }
 
-                ConsoleWindow.Print("Usage:", ConsoleColor.Yellow, false, false);
-                ConsoleWindow.Print("  plants                  - Show current plant settings", ConsoleColor.Gray, false, false);
-                ConsoleWindow.Print("  plants growth off       - Disable growth scaling (vanilla)", ConsoleColor.Gray, false, false);
-                ConsoleWindow.Print("  plants growth on        - Scale growth by day length", ConsoleColor.Gray, false, false);
-                ConsoleWindow.Print("  plants growth <value>   - Use custom growth multiplier", ConsoleColor.Gray, false, false);
-                ConsoleWindow.Print("  plants light on|off     - Toggle light/dark requirement scaling", ConsoleColor.Gray, false, false);
+                ConsoleWindow.Print("Usage:", ConsoleColor.Yellow, false, false, false);
+                ConsoleWindow.Print("  plants                  - Show current plant settings", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  plants growth off       - Disable growth scaling (vanilla)", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  plants growth on        - Scale growth by day length", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  plants growth <value>   - Use custom growth multiplier", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  plants light on|off     - Toggle light/dark requirement scaling", ConsoleColor.Gray, false, false, false);
                 return false;
             }
 
@@ -164,20 +164,20 @@ namespace BeefsLongerOrbitalPeriods
 
         private static void ShowUsage()
         {
-            ConsoleWindow.Print("", ConsoleColor.White, false, false);
-            ConsoleWindow.Print("=== Time Command Usage ===", ConsoleColor.Yellow, false, false);
-            ConsoleWindow.Print("time <multiplier>     - Set custom multiplier (e.g., time 6.0)", ConsoleColor.Green, false, false);
-            ConsoleWindow.Print("time <preset>         - Use real-world preset", ConsoleColor.Green, false, false);
-            ConsoleWindow.Print("", ConsoleColor.White, false, false);
-            ConsoleWindow.Print("=== Custom ===", ConsoleColor.Cyan, false, false);
-            ConsoleWindow.Print("0.5x = 10min | 1x = 20min | 3x = 1hr (default) | 6x = 2hr", ConsoleColor.Gray, false, false);
-            ConsoleWindow.Print("", ConsoleColor.White, false, false);
-            ConsoleWindow.Print("=== Presets ===", ConsoleColor.Cyan, false, false);
-            ConsoleWindow.Print("time real-moon   - 29.53x (~10 hours)", ConsoleColor.Gray, false, false);
-            ConsoleWindow.Print("time real-mars   - 1.027x (~20.5 min)", ConsoleColor.Gray, false, false);
-            ConsoleWindow.Print("time real-europa - 3.551x (~1 hr 11 min)", ConsoleColor.Gray, false, false);
-            ConsoleWindow.Print("time real-venus  - 116.75x (~39 hours)", ConsoleColor.Gray, false, false);
-            ConsoleWindow.Print("time real-mimas  - 0.942x (~18.8 min)", ConsoleColor.Gray, false, false);
+            ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
+            ConsoleWindow.Print("=== Time Command Usage ===", ConsoleColor.Yellow, false, false, false);
+            ConsoleWindow.Print("time <multiplier>     - Set custom multiplier (e.g., time 6.0)", ConsoleColor.Green, false, false, false);
+            ConsoleWindow.Print("time <preset>         - Use real-world preset", ConsoleColor.Green, false, false, false);
+            ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
+            ConsoleWindow.Print("=== Custom ===", ConsoleColor.Cyan, false, false, false);
+            ConsoleWindow.Print("0.5x = 10min | 1x = 20min | 3x = 1hr (default) | 6x = 2hr", ConsoleColor.Gray, false, false, false);
+            ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
+            ConsoleWindow.Print("=== Presets ===", ConsoleColor.Cyan, false, false, false);
+            ConsoleWindow.Print("time real-moon   - 29.53x (~10 hours)", ConsoleColor.Gray, false, false, false);
+            ConsoleWindow.Print("time real-mars   - 1.027x (~20.5 min)", ConsoleColor.Gray, false, false, false);
+            ConsoleWindow.Print("time real-europa - 3.551x (~1 hr 11 min)", ConsoleColor.Gray, false, false, false);
+            ConsoleWindow.Print("time real-venus  - 116.75x (~39 hours)", ConsoleColor.Gray, false, false, false);
+            ConsoleWindow.Print("time real-mimas  - 0.942x (~18.8 min)", ConsoleColor.Gray, false, false, false);
         }
 
         public static void RegisterCommands()
@@ -211,7 +211,7 @@ namespace BeefsLongerOrbitalPeriods
         {
             if (NetworkManager.NetworkRole == NetworkRole.Client)
             {
-                ConsoleWindow.Print("Cannot change orbital settings as client connected to server.", ConsoleColor.Red, false, false);
+                ConsoleWindow.Print("Cannot change orbital settings as client connected to server.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
@@ -221,21 +221,21 @@ namespace BeefsLongerOrbitalPeriods
             float multiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
             string timeDesc = GetTimeDescription(multiplier);
 
-            ConsoleWindow.Print($"Applied preset: {preset}", ConsoleColor.Cyan, false, false);
-            ConsoleWindow.Print($"Multiplier: {multiplier}x, Day Length: {timeDesc}", ConsoleColor.Green, false, false);
+            ConsoleWindow.Print($"Applied preset: {preset}", ConsoleColor.Cyan, false, false, false);
+            ConsoleWindow.Print($"Multiplier: {multiplier}x, Day Length: {timeDesc}", ConsoleColor.Green, false, false, false);
         }
 
         public static void SetCustomMultiplier(float multiplier)
         {
             if (multiplier <= 0)
             {
-                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false);
+                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
             if (NetworkManager.NetworkRole == NetworkRole.Client)
             {
-                ConsoleWindow.Print("Cannot change orbital settings as client connected to server.", ConsoleColor.Red, false, false);
+                ConsoleWindow.Print("Cannot change orbital settings as client connected to server.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
@@ -246,15 +246,15 @@ namespace BeefsLongerOrbitalPeriods
             OrbitalPatcher.ApplyTimeCommand();
 
             string timeDesc = GetTimeDescription(multiplier);
-            ConsoleWindow.Print($"Set to Custom mode", ConsoleColor.Cyan, false, false);
-            ConsoleWindow.Print($"Multiplier: {multiplier}x, Day Length: {timeDesc}", ConsoleColor.Green, false, false);
+            ConsoleWindow.Print($"Set to Custom mode", ConsoleColor.Cyan, false, false, false);
+            ConsoleWindow.Print($"Multiplier: {multiplier}x, Day Length: {timeDesc}", ConsoleColor.Green, false, false, false);
         }
 
         public static void SetPlantGrowthMode(PlantGrowthMode mode)
         {
             if (NetworkManager.NetworkRole == NetworkRole.Client)
             {
-                ConsoleWindow.Print("Cannot change plant settings as client connected to server.", ConsoleColor.Red, false, false);
+                ConsoleWindow.Print("Cannot change plant settings as client connected to server.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
@@ -262,19 +262,19 @@ namespace BeefsLongerOrbitalPeriods
 
             if (mode == PlantGrowthMode.Disabled)
             {
-                ConsoleWindow.Print("Plant growth scaling DISABLED - vanilla growth speed", ConsoleColor.Green, false, false);
+                ConsoleWindow.Print("Plant growth scaling DISABLED - vanilla growth speed", ConsoleColor.Green, false, false, false);
             }
             else if (mode == PlantGrowthMode.UseDayLength)
             {
                 float dayMultiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
-                ConsoleWindow.Print($"Plant growth scaling ENABLED (using day length)", ConsoleColor.Green, false, false);
-                ConsoleWindow.Print($"Plants will grow {dayMultiplier}x slower", ConsoleColor.Yellow, false, false);
+                ConsoleWindow.Print($"Plant growth scaling ENABLED (using day length)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"Plants will grow {dayMultiplier}x slower", ConsoleColor.Yellow, false, false, false);
             }
             else if (mode == PlantGrowthMode.Custom)
             {
                 float customMultiplier = BeefsLongerOrbitalPeriodsPlugin.PlantGrowthCustomMultiplier.Value;
-                ConsoleWindow.Print($"Plant growth scaling ENABLED (custom)", ConsoleColor.Green, false, false);
-                ConsoleWindow.Print($"Plants will grow {customMultiplier}x slower", ConsoleColor.Yellow, false, false);
+                ConsoleWindow.Print($"Plant growth scaling ENABLED (custom)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"Plants will grow {customMultiplier}x slower", ConsoleColor.Yellow, false, false, false);
             }
         }
 
@@ -282,13 +282,13 @@ namespace BeefsLongerOrbitalPeriods
         {
             if (NetworkManager.NetworkRole == NetworkRole.Client)
             {
-                ConsoleWindow.Print("Cannot change plant settings as client connected to server.", ConsoleColor.Red, false, false);
+                ConsoleWindow.Print("Cannot change plant settings as client connected to server.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
             if (multiplier <= 0)
             {
-                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false);
+                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
@@ -297,15 +297,15 @@ namespace BeefsLongerOrbitalPeriods
             BeefsLongerOrbitalPeriodsPlugin.PlantGrowthModeConfig.Value = PlantGrowthMode.Custom;
             BeefsLongerOrbitalPeriodsPlugin.PlantGrowthCustomMultiplier.Value = multiplier;
 
-            ConsoleWindow.Print($"Plant growth scaling set to CUSTOM", ConsoleColor.Green, false, false);
-            ConsoleWindow.Print($"Plants will grow {multiplier}x slower", ConsoleColor.Yellow, false, false);
+            ConsoleWindow.Print($"Plant growth scaling set to CUSTOM", ConsoleColor.Green, false, false, false);
+            ConsoleWindow.Print($"Plants will grow {multiplier}x slower", ConsoleColor.Yellow, false, false, false);
         }
 
         public static void SetPlantLightDarkScaling(bool enabled)
         {
             if (NetworkManager.NetworkRole == NetworkRole.Client)
             {
-                ConsoleWindow.Print("Cannot change plant settings as client connected to server.", ConsoleColor.Red, false, false);
+                ConsoleWindow.Print("Cannot change plant settings as client connected to server.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
@@ -314,12 +314,12 @@ namespace BeefsLongerOrbitalPeriods
 
             if (enabled)
             {
-                ConsoleWindow.Print($"Plant LIGHT/DARK scaling ENABLED", ConsoleColor.Green, false, false);
-                ConsoleWindow.Print($"Plants need {multiplier}x more light and {multiplier}x more darkness per day", ConsoleColor.Yellow, false, false);
+                ConsoleWindow.Print($"Plant LIGHT/DARK scaling ENABLED", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"Plants need {multiplier}x more light and {multiplier}x more darkness per day", ConsoleColor.Yellow, false, false, false);
             }
             else
             {
-                ConsoleWindow.Print("Plant LIGHT/DARK scaling DISABLED - vanilla requirements", ConsoleColor.Green, false, false);
+                ConsoleWindow.Print("Plant LIGHT/DARK scaling DISABLED - vanilla requirements", ConsoleColor.Green, false, false, false);
             }
         }
 
@@ -330,39 +330,39 @@ namespace BeefsLongerOrbitalPeriods
             float dayMultiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
             float growthMultiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectivePlantGrowthMultiplier();
 
-            ConsoleWindow.Print("=== Plant Settings ===", ConsoleColor.Yellow, false, false);
-            ConsoleWindow.Print($"Current day length multiplier: {dayMultiplier}x", ConsoleColor.White, false, false);
-            ConsoleWindow.Print("", ConsoleColor.White, false, false);
+            ConsoleWindow.Print("=== Plant Settings ===", ConsoleColor.Yellow, false, false, false);
+            ConsoleWindow.Print($"Current day length multiplier: {dayMultiplier}x", ConsoleColor.White, false, false, false);
+            ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
 
             // Growth speed status
             if (growthMode == PlantGrowthMode.Disabled)
             {
-                ConsoleWindow.Print($"Growth Speed Scaling: DISABLED", ConsoleColor.Red, false, false);
-                ConsoleWindow.Print($"  → Plants use vanilla growth speed", ConsoleColor.Gray, false, false);
+                ConsoleWindow.Print($"Growth Speed Scaling: DISABLED", ConsoleColor.Red, false, false, false);
+                ConsoleWindow.Print($"  -> Plants use vanilla growth speed", ConsoleColor.Gray, false, false, false);
             }
             else if (growthMode == PlantGrowthMode.UseDayLength)
             {
-                ConsoleWindow.Print($"Growth Speed Scaling: ENABLED (using day length)", ConsoleColor.Green, false, false);
-                ConsoleWindow.Print($"  → Plants grow {growthMultiplier}x slower than vanilla", ConsoleColor.Gray, false, false);
+                ConsoleWindow.Print($"Growth Speed Scaling: ENABLED (using day length)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"  -> Plants grow {growthMultiplier}x slower than vanilla", ConsoleColor.Gray, false, false, false);
             }
             else if (growthMode == PlantGrowthMode.Custom)
             {
-                ConsoleWindow.Print($"Growth Speed Scaling: ENABLED (custom)", ConsoleColor.Green, false, false);
-                ConsoleWindow.Print($"  → Plants grow {growthMultiplier}x slower than vanilla", ConsoleColor.Gray, false, false);
+                ConsoleWindow.Print($"Growth Speed Scaling: ENABLED (custom)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"  -> Plants grow {growthMultiplier}x slower than vanilla", ConsoleColor.Gray, false, false, false);
             }
 
-            ConsoleWindow.Print("", ConsoleColor.White, false, false);
+            ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
 
             // Light/dark status
             if (lightEnabled)
             {
-                ConsoleWindow.Print($"Light/Dark Scaling: ENABLED", ConsoleColor.Green, false, false);
-                ConsoleWindow.Print($"  → Plants need {dayMultiplier}x more light/dark per day cycle", ConsoleColor.Gray, false, false);
+                ConsoleWindow.Print($"Light/Dark Scaling: ENABLED", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"  -> Plants need {dayMultiplier}x more light/dark per day cycle", ConsoleColor.Gray, false, false, false);
             }
             else
             {
-                ConsoleWindow.Print($"Light/Dark Scaling: DISABLED", ConsoleColor.Red, false, false);
-                ConsoleWindow.Print($"  → Plants use vanilla light/dark requirements", ConsoleColor.Gray, false, false);
+                ConsoleWindow.Print($"Light/Dark Scaling: DISABLED", ConsoleColor.Red, false, false, false);
+                ConsoleWindow.Print($"  -> Plants use vanilla light/dark requirements", ConsoleColor.Gray, false, false, false);
             }
         }
 
@@ -373,12 +373,12 @@ namespace BeefsLongerOrbitalPeriods
             PlantGrowthMode growthMode = BeefsLongerOrbitalPeriodsPlugin.PlantGrowthModeConfig.Value;
             bool lightScaling = BeefsLongerOrbitalPeriodsPlugin.ScalePlantLightDark.Value;
 
-            ConsoleWindow.Print("=== Beef's Longer Orbital Periods Settings ===", ConsoleColor.Yellow, false, false);
-            ConsoleWindow.Print($"Day Length Preset: {preset}", ConsoleColor.White, false, false);
-            ConsoleWindow.Print($"Effective Multiplier: {current}x", ConsoleColor.White, false, false);
+            ConsoleWindow.Print("=== Beef's Longer Orbital Periods Settings ===", ConsoleColor.Yellow, false, false, false);
+            ConsoleWindow.Print($"Day Length Preset: {preset}", ConsoleColor.White, false, false, false);
+            ConsoleWindow.Print($"Effective Multiplier: {current}x", ConsoleColor.White, false, false, false);
 
             string timeDesc = GetTimeDescription(current);
-            ConsoleWindow.Print($"Day Length: {timeDesc}", ConsoleColor.White, false, false);
+            ConsoleWindow.Print($"Day Length: {timeDesc}", ConsoleColor.White, false, false, false);
 
             string growthDesc;
             if (growthMode == PlantGrowthMode.Disabled)
@@ -394,8 +394,8 @@ namespace BeefsLongerOrbitalPeriods
                 growthDesc = $"Custom ({BeefsLongerOrbitalPeriodsPlugin.PlantGrowthCustomMultiplier.Value}x)";
             }
 
-            ConsoleWindow.Print($"Plant Growth Scaling: {growthDesc}", ConsoleColor.White, false, false);
-            ConsoleWindow.Print($"Plant Light/Dark Scaling: {(lightScaling ? "Enabled" : "Disabled")}", ConsoleColor.White, false, false);
+            ConsoleWindow.Print($"Plant Growth Scaling: {growthDesc}", ConsoleColor.White, false, false, false);
+            ConsoleWindow.Print($"Plant Light/Dark Scaling: {(lightScaling ? "Enabled" : "Disabled")}", ConsoleColor.White, false, false, false);
         }
     }
 }
