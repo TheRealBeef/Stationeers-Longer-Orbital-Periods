@@ -74,6 +74,41 @@ namespace BeefsLongerOrbitalPeriods
                 return false;
             }
 
+            if (command == "daynight")
+            {
+                if (parts.Length == 1)
+                {
+                    OrbitalCommands.ShowDayNightSettings();
+                    return false;
+                }
+
+                string arg = parts[1].ToLower();
+
+                if (arg == "off" || arg == "false" || arg == "disable")
+                {
+                    OrbitalCommands.SetDayNightEnabled(false);
+                    return false;
+                }
+
+                if (arg == "on" || arg == "true" || arg == "enable")
+                {
+                    OrbitalCommands.SetDayNightEnabled(true);
+                    return false;
+                }
+
+                if (float.TryParse(arg, out float percent))
+                {
+                    OrbitalCommands.SetDayPercent(percent);
+                    return false;
+                }
+
+                ConsoleWindow.Print("Usage:", ConsoleColor.Yellow, false, false, false);
+                ConsoleWindow.Print("  daynight                - Show current day to night ratio settings", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  daynight <percent>      - Set day percent (1-99)", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  daynight on|off         - Enable/disable day/night ratio", ConsoleColor.Gray, false, false, false);
+                return false;
+            }
+
             if (command == "plants")
             {
                 if (parts.Length == 1)
@@ -186,6 +221,7 @@ namespace BeefsLongerOrbitalPeriods
             BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  plants - Show plant settings");
             BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  plants growth off|on|<value> - Control growth speed scaling");
             BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  plants light on|off - Toggle light/dark requirement scaling");
+            BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  daynight [percent] - Control day/night ratio");
         }
     }
 
@@ -372,6 +408,8 @@ namespace BeefsLongerOrbitalPeriods
             float current = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
             PlantGrowthMode growthMode = BeefsLongerOrbitalPeriodsPlugin.PlantGrowthModeConfig.Value;
             bool lightScaling = BeefsLongerOrbitalPeriodsPlugin.ScalePlantLightDark.Value;
+            bool dayNightEnabled = BeefsLongerOrbitalPeriodsPlugin.DayNightRatioEnabled.Value;
+            float dayPercent = BeefsLongerOrbitalPeriodsPlugin.DayPercent.Value;
 
             ConsoleWindow.Print("=== Beef's Longer Orbital Periods Settings ===", ConsoleColor.Yellow, false, false, false);
             ConsoleWindow.Print($"Day Length Preset: {preset}", ConsoleColor.White, false, false, false);
@@ -379,6 +417,15 @@ namespace BeefsLongerOrbitalPeriods
 
             string timeDesc = GetTimeDescription(current);
             ConsoleWindow.Print($"Day Length: {timeDesc}", ConsoleColor.White, false, false, false);
+
+            if (dayNightEnabled)
+            {
+                ConsoleWindow.Print($"Day/Night Ratio: {dayPercent}% day / {100f - dayPercent}% night", ConsoleColor.White, false, false, false);
+            }
+            else
+            {
+                ConsoleWindow.Print("Day/Night Ratio: Disabled", ConsoleColor.White, false, false, false);
+            }
 
             string growthDesc;
             if (growthMode == PlantGrowthMode.Disabled)
@@ -397,5 +444,82 @@ namespace BeefsLongerOrbitalPeriods
             ConsoleWindow.Print($"Plant Growth Scaling: {growthDesc}", ConsoleColor.White, false, false, false);
             ConsoleWindow.Print($"Plant Light/Dark Scaling: {(lightScaling ? "Enabled" : "Disabled")}", ConsoleColor.White, false, false, false);
         }
+
+        public static void ShowDayNightSettings()
+        {
+            bool enabled = BeefsLongerOrbitalPeriodsPlugin.DayNightRatioEnabled.Value;
+            float dayPercent = BeefsLongerOrbitalPeriodsPlugin.DayPercent.Value;
+
+            ConsoleWindow.Print("=== Day/Night Ratio Settings ===", ConsoleColor.Yellow, false, false, false);
+
+            if (enabled)
+            {
+                ConsoleWindow.Print($"Status: ENABLED", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"Day Percent: {dayPercent}%", ConsoleColor.White, false, false, false);
+                ConsoleWindow.Print($"  -> {dayPercent}% of each cycle is daytime, {100f - dayPercent}% is nighttime", ConsoleColor.Gray, false, false, false);
+
+                float daySpeed = 0.5f / (dayPercent / 100f);
+                float nightSpeed = 0.5f / (1f - dayPercent / 100f);
+                ConsoleWindow.Print($"  -> Day speed: {daySpeed:F2}x | Night speed: {nightSpeed:F2}x", ConsoleColor.Gray, false, false, false);
+            }
+            else
+            {
+                ConsoleWindow.Print($"Status: DISABLED", ConsoleColor.Red, false, false, false);
+                ConsoleWindow.Print($"Day Percent: {dayPercent}% (not active)", ConsoleColor.Gray, false, false, false);
+            }
+
+            float solarAngle = Vector3.Angle(Vector3.up, OrbitalSimulation.WorldSunVector);
+            float currentFactor = BeefsLongerOrbitalPeriodsPlugin.GetDayNightSpeedFactor();
+            ConsoleWindow.Print($"Current speed factor: {currentFactor:F3}x", ConsoleColor.Cyan, false, false, false);
+        }
+
+        public static void SetDayNightEnabled(bool enabled)
+        {
+            if (NetworkManager.NetworkRole == NetworkRole.Client)
+            {
+                ConsoleWindow.Print("Cannot change, you are client not server.", ConsoleColor.Red, false, false, false);
+                return;
+            }
+
+            BeefsLongerOrbitalPeriodsPlugin.DayNightRatioEnabled.Value = enabled;
+            float dayPercent = BeefsLongerOrbitalPeriodsPlugin.DayPercent.Value;
+
+            if (enabled)
+            {
+                ConsoleWindow.Print($"Day/night ratio ENABLED ({dayPercent}% day / {100f - dayPercent}% night)", ConsoleColor.Green, false, false, false);
+            }
+            else
+            {
+                ConsoleWindow.Print("Day/night ratio DISABLED", ConsoleColor.Green, false, false, false);
+            }
+        }
+
+        public static void SetDayPercent(float percent)
+        {
+            if (NetworkManager.NetworkRole == NetworkRole.Client)
+            {
+                ConsoleWindow.Print("Cannot change, you are client not server.", ConsoleColor.Red, false, false, false);
+                return;
+            }
+
+            if (percent < 1f || percent > 99f)
+            {
+                ConsoleWindow.Print("Day percent must be a number between 1 and 99.", ConsoleColor.Red, false, false, false);
+                return;
+            }
+
+            percent = Mathf.Clamp(percent, 1.0f, 99.0f);
+
+            BeefsLongerOrbitalPeriodsPlugin.DayPercent.Value = percent;
+            BeefsLongerOrbitalPeriodsPlugin.DayNightRatioEnabled.Value = true;
+
+            float daySpeed = 0.5f / (percent / 100f);
+            float nightSpeed = 0.5f / (1f - percent / 100f);
+
+            ConsoleWindow.Print($"Day percent set to {percent}%", ConsoleColor.Green, false, false, false);
+            ConsoleWindow.Print($"  -> {percent}% day / {100f - percent}% night", ConsoleColor.Yellow, false, false, false);
+            ConsoleWindow.Print($"  -> Day speed: {daySpeed:F2}x | Night speed: {nightSpeed:F2}x", ConsoleColor.Gray, false, false, false);
+        }
+
     }
 }

@@ -1,7 +1,9 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using UnityEngine;
 
 namespace BeefsLongerOrbitalPeriods
 {
@@ -30,6 +32,8 @@ namespace BeefsLongerOrbitalPeriods
         public static ConfigEntry<PlantGrowthMode> PlantGrowthModeConfig;
         public static ConfigEntry<float> PlantGrowthCustomMultiplier;
         public static ConfigEntry<bool> ScalePlantLightDark;
+        public static ConfigEntry<bool> DayNightRatioEnabled;
+        public static ConfigEntry<float> DayPercent;
         public static ManualLogSource Log;
 
         public static readonly float PresetMoon = 29.53f;
@@ -85,6 +89,40 @@ namespace BeefsLongerOrbitalPeriods
             return PlantGrowthModeConfig.Value != PlantGrowthMode.Disabled;
         }
 
+        public static float GetDayNightSpeedFactor()
+        {
+            if (!DayNightRatioEnabled.Value)
+            {
+                return 1.0f;
+            }
+            float dayPercent = DayPercent.Value / 100f;
+            if (Math.Abs(dayPercent - 0.5f) < 0.001f)
+            {
+                return 1.0f;
+            }
+            float daySpeed = 0.5f / dayPercent;
+            float nightSpeed = 0.5f / (1.0f - dayPercent);
+            float solarAngle = Vector3.Angle(Vector3.up, OrbitalSimulation.WorldSunVector);
+            if (solarAngle < 70f)
+            {
+                return daySpeed;
+            }
+            if (solarAngle > 110f)
+            {
+                return nightSpeed;
+            }
+            float t = (solarAngle - 70f) / 40f; // 0 to 1
+            if (t < 0.5f)
+            {
+                t = 1f - Mathf.Cos(Mathf.PI * t / 2f);
+            }
+            else
+            {
+                t = Mathf.Sin(Mathf.PI * t / 2f);
+            }
+            return Mathf.Lerp(daySpeed, nightSpeed, t);
+        }
+
         private void Awake()
         {
             Log = Logger;
@@ -137,18 +175,37 @@ namespace BeefsLongerOrbitalPeriods
                 "If enabled, plant light/darkness requirements per day will be scaled by the day length multiplier.\n" +
                 "This makes plants need proportionally more light/dark time per longer day cycle.");
 
+            DayNightRatioEnabled = Config.Bind(
+                "4. Day/Night Ratio",
+                "Enable Day/Night Ratio",
+                true,
+                "If enabled, the day/night cycle will be asymmetric. The Day % determines how much is day\n" +
+                "And the night percent is whatever is remaining");
+
+            DayPercent = Config.Bind(
+                "4. Day/Night Ratio",
+                "Day Percent",
+                50.0f,
+                new ConfigDescription(
+                    "What percentage of the cycle is spent in daytime.\n" +
+                    "50% = vanilla, same as if it's disabled\n" +
+                    "70% = 70% day, 30% night (longer days)\n" +
+                    "30% = 30% day, 70% night (longer nights)",
+                    new AcceptableValueRange<float>(1.0f, 99.0f)));
+
             float dayMultiplier = GetEffectiveDayLengthMultiplier();
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_NAME} loaded");
             Log.LogInfo($"Day length: {DayLengthPresetConfig.Value} ({dayMultiplier}x)");
             Log.LogInfo($"Plant growth: {PlantGrowthModeConfig.Value}");
             Log.LogInfo($"Plant light/dark scaling: {(ScalePlantLightDark.Value ? "Enabled" : "Disabled")}");
+            Log.LogInfo($"Day/night ratio: {(DayNightRatioEnabled.Value ? $"Enabled ({DayPercent.Value}% day)" : "Disabled")}");
 
             Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
 
             ConsoleCommandHandler.RegisterCommands();
 
-            Log.LogInfo("Console commands: 'time', 'plants'");
+            Log.LogInfo("Console commands: 'time', 'plants', 'daynight'");
         }
 
         public static void AppendLog(string logdetails)

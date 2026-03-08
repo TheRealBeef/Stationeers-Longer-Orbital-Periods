@@ -66,12 +66,27 @@ When enabled, plant light and darkness requirements per day are multiplied by th
 - `plants growth <value>` - Use custom growth multiplier
 - `plants light on|off` - Toggle light/dark requirement scaling
 
+## Day/Night Ratio
+
+By default, the mod uses an equal day/night cycle (50/50). You can change the ratio so that daytime is longer or shorter than nighttime.
+
+This works by speeding up or slowing down the entire orbital simulation depending on whether the sun is above or below the horizon.
+
+### Commands
+
+- `daynight` - Show current day/night ratio settings
+- `daynight <percent>` - Set day percent (1-99)
+- `daynight on|off` - Enable/disable applying day/night ratio
+
 ## Notes
 - This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
-- The orbital period change is server-side only - clients do not need the mod for day/night cycle changes (at least 90% sure).
+- The orbital period change is server-side only - clients do not need the mod for day/night cycle changes.
 - Plant scaling changes are currently applied (to the best of my knowledge) server-side only. If plant growth is not syncing correctly in multiplayer with plant scaling enabled, clients may also need the mod installed.
 
 ## Changelog
+>### Version 3.1.0:
+>- Add ability to adjust day/night ratio for changing how much of each cycle is day vs night
+
 >### Version 3.0.2:
 >- See if about.xml -> About.xml fixes dedicated server issues
 

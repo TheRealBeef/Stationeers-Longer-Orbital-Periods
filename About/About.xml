@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Name>Beef's Longer Orbital Periods</Name>
     <Author>TheRealBeef</Author>
-    <Version>3.0.2</Version>
+    <Version>3.1.0</Version>
 
     <Description>
         [h1]Beef's Longer Orbital Periods[/h1]
@@ -56,12 +56,27 @@
         - [b]plants growth [i]value[/i][/b] - Use custom growth multiplier
         - [b]plants light on|off[/b] - Toggle light/dark requirement scaling
 
+        [h2]Day/Night Ratio[/h2]
+
+        By default, the mod uses an equal day/night cycle (50/50). You can change the ratio so that daytime is longer or shorter than nighttime.
+
+        This works by speeding up or slowing down the entire orbital simulation depending on whether the sun is above or below the horizon.
+
+        [b]Day/Night Commands[/b]
+
+        - [b]daynight[/b] - Show current day/night ratio settings
+        - [b]daynight [i]percent[/i][/b] - Set day percent (1-99)
+        - [b]daynight on|off[/b] - Enable/disable day/night ratio
+
         [b]Note:[/b] This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
 
         Source Code: https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods
     </Description>
 
     <ChangeLog>
+        3.1.0
+        - Add ability to adjust day/night ratio for changing how much of each cycle is day vs night
+
         3.0.2
         - See if about.xml -> About.xml fixes dedicated server issues
 
@@ -122,6 +137,14 @@ Press F3 to open the console and use the <b>time</b> command.
 - <b>plants growth on</b> - Scale growth by day length
 - <b>plants growth <i>value</i></b> - Use custom growth multiplier
 - <b>plants light on|off</b> - Toggle light/dark requirement scaling
+
+<b>Day/Night Ratio:</b>
+By default, the mod uses an equal day/night cycle (50/50). You can change the ratio so that daytime is longer or shorter than nighttime. This works by speeding up or slowing down the entire orbital simulation depending on whether the sun is above or below the horizon.
+
+<b>Day/Night Commands:</b>
+- <b>daynight</b> - Show current settings
+- <b>daynight <i>percent</i></b> - Set day percent (1-99)
+- <b>daynight on|off</b> - Enable/disable
 
 <b>Note:</b> This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
 ]]>
