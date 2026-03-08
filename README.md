@@ -72,6 +72,9 @@ When enabled, plant light and darkness requirements per day are multiplied by th
 - Plant scaling changes are currently applied (to the best of my knowledge) server-side only. If plant growth is not syncing correctly in multiplayer with plant scaling enabled, clients may also need the mod installed.
 
 ## Changelog
+>### Version 3.0.2:
+>- See if about.xml -> About.xml fixes dedicated server issues
+
 >### Version 3.0.1:
 >- Updated to fix console commands errors with Combustion Deep Miner update.
 

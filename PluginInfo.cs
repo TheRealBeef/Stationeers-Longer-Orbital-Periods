@@ -4,6 +4,6 @@
     {
         public const string PLUGIN_GUID = "BeefsLongerOrbitalPeriods";
         public const string PLUGIN_NAME = "Beef's Longer Orbital Periods";
-        public const string PLUGIN_VERSION = "3.0.1";
+        public const string PLUGIN_VERSION = "3.0.2";
     }
 }
