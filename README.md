@@ -84,6 +84,12 @@ This works by speeding up or slowing down the entire orbital simulation dependin
 - Plant scaling changes are currently applied (to the best of my knowledge) server-side only. If plant growth is not syncing correctly in multiplayer with plant scaling enabled, clients may also need the mod installed.
 
 ## Changelog
+>### Version 3.1.1:
+>- Fix plant time scaling so that it isn't accumulating both light and dark deficiency simultaneously
+>- Min/max in plant genetics overview now displays proper values
+>- Stationpedia should display proper times for growth time / light/dark values etc based on settings
+
+
 >### Version 3.1.0:
 >- Add ability to adjust day/night ratio for changing how much of each cycle is day vs night
 

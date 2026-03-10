@@ -295,6 +295,7 @@ namespace BeefsLongerOrbitalPeriods
             }
 
             BeefsLongerOrbitalPeriodsPlugin.PlantGrowthModeConfig.Value = mode;
+            PlantGrowthTimeScaler.RefreshAfterConfigChange();
 
             if (mode == PlantGrowthMode.Disabled)
             {
@@ -332,6 +333,7 @@ namespace BeefsLongerOrbitalPeriods
 
             BeefsLongerOrbitalPeriodsPlugin.PlantGrowthModeConfig.Value = PlantGrowthMode.Custom;
             BeefsLongerOrbitalPeriodsPlugin.PlantGrowthCustomMultiplier.Value = multiplier;
+            PlantGrowthTimeScaler.RefreshAfterConfigChange();
 
             ConsoleWindow.Print($"Plant growth scaling set to CUSTOM", ConsoleColor.Green, false, false, false);
             ConsoleWindow.Print($"Plants will grow {multiplier}x slower", ConsoleColor.Yellow, false, false, false);
@@ -346,6 +348,7 @@ namespace BeefsLongerOrbitalPeriods
             }
 
             BeefsLongerOrbitalPeriodsPlugin.ScalePlantLightDark.Value = enabled;
+            PlantGrowthTimeScaler.RefreshAfterConfigChange();
             float multiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
 
             if (enabled)

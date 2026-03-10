@@ -74,6 +74,11 @@
     </Description>
 
     <ChangeLog>
+        3.1.1
+        - Fix plant time scaling so that it isn't accumulating both light and dark deficiency simultaneously
+        - Min/max in plant genetics overview now displays proper values
+        - Stationpedia should display proper times for growth time / light/dark values etc based on settings
+
         3.1.0
         - Add ability to adjust day/night ratio for changing how much of each cycle is day vs night
 
