@@ -24,6 +24,13 @@ namespace BeefsLongerOrbitalPeriods
         Custom
     }
 
+    public enum StormScalingMode
+    {
+        Disabled,
+        UseDayLength,
+        Custom
+    }
+
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class BeefsLongerOrbitalPeriodsPlugin : BaseUnityPlugin
     {
@@ -34,6 +41,8 @@ namespace BeefsLongerOrbitalPeriods
         public static ConfigEntry<bool> ScalePlantLightDark;
         public static ConfigEntry<bool> DayNightRatioEnabled;
         public static ConfigEntry<float> DayPercent;
+        public static ConfigEntry<StormScalingMode> StormDurationMode;
+        public static ConfigEntry<float> StormDurationCustomMultiplier;
         public static ManualLogSource Log;
 
         public static readonly float PresetMoon = 29.53f;
@@ -80,6 +89,23 @@ namespace BeefsLongerOrbitalPeriods
             if (PlantGrowthModeConfig.Value == PlantGrowthMode.Custom)
             {
                 return PlantGrowthCustomMultiplier.Value;
+            }
+            return 1.0f;
+        }
+
+        public static float GetEffectiveStormDurationMultiplier()
+        {
+            if (StormDurationMode.Value == StormScalingMode.Disabled)
+            {
+                return 1.0f;
+            }
+            if (StormDurationMode.Value == StormScalingMode.UseDayLength)
+            {
+                return GetEffectiveDayLengthMultiplier();
+            }
+            if (StormDurationMode.Value == StormScalingMode.Custom)
+            {
+                return StormDurationCustomMultiplier.Value;
             }
             return 1.0f;
         }
@@ -193,19 +219,41 @@ namespace BeefsLongerOrbitalPeriods
                     "30% = 30% day, 70% night (longer nights)",
                     new AcceptableValueRange<float>(1.0f, 99.0f)));
 
+            StormDurationMode = Config.Bind(
+                "5. Storm Scaling",
+                "Storm Duration Mode",
+                StormScalingMode.UseDayLength,
+                "Controls how storm duration is scaled.\n" +
+                "• Disabled: Vanilla storm duration\n" +
+                "• UseDayLength: Storms last proportionally longer with day length\n" +
+                "• Custom: Use a custom storm duration multiplier below");
+
+            StormDurationCustomMultiplier = Config.Bind(
+                "5. Storm Scaling",
+                "Custom Storm Duration Multiplier",
+                3.0f,
+                new ConfigDescription(
+                    "Custom storm duration multiplier (only used when Storm Duration Mode is 'Custom').\n" +
+                    "Storms will last this many times longer than vanilla.\n" +
+                    "Game default storms are 2min - 10min long",
+                    new AcceptableValueRange<float>(0.01f, 100.0f)));
+
             float dayMultiplier = GetEffectiveDayLengthMultiplier();
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_NAME} loaded");
             Log.LogInfo($"Day length: {DayLengthPresetConfig.Value} ({dayMultiplier}x)");
             Log.LogInfo($"Plant growth: {PlantGrowthModeConfig.Value}");
             Log.LogInfo($"Plant light/dark scaling: {(ScalePlantLightDark.Value ? "Enabled" : "Disabled")}");
             Log.LogInfo($"Day/night ratio: {(DayNightRatioEnabled.Value ? $"Enabled ({DayPercent.Value}% day)" : "Disabled")}");
+            Log.LogInfo($"Storm duration: {StormDurationMode.Value}" +
+                (StormDurationMode.Value == StormScalingMode.Custom ?
+                    $" ({StormDurationCustomMultiplier.Value}x)" : ""));
 
             Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll();
 
             ConsoleCommandHandler.RegisterCommands();
 
-            Log.LogInfo("Console commands: 'time', 'plants', 'daynight'");
+            Log.LogInfo("Console commands: 'time', 'plants', 'daynight', 'storms'");
         }
 
         public static void AppendLog(string logdetails)

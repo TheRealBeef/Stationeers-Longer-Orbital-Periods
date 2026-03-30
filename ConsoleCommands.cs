@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Networking;
 using Assets.Scripts;
 using Util.Commands;
+using Weather;
 
 namespace BeefsLongerOrbitalPeriods
 {
@@ -194,6 +195,57 @@ namespace BeefsLongerOrbitalPeriods
                 return false;
             }
 
+            if (command == "storms")
+            {
+                if (parts.Length == 1)
+                {
+                    OrbitalCommands.ShowStormSettings();
+                    return false;
+                }
+
+                if (parts.Length >= 2)
+                {
+                    string subCommand = parts[1].ToLower();
+
+                    // storms duration
+                    if (subCommand == "duration")
+                    {
+                        if (parts.Length == 2)
+                        {
+                            OrbitalCommands.ShowStormSettings();
+                            return false;
+                        }
+
+                        string arg = parts[2].ToLower();
+
+                        if (arg == "off" || arg == "false" || arg == "disable" || arg == "disabled")
+                        {
+                            OrbitalCommands.SetStormDurationMode(StormScalingMode.Disabled);
+                            return false;
+                        }
+
+                        if (arg == "on" || arg == "true" || arg == "enable" || arg == "daylength")
+                        {
+                            OrbitalCommands.SetStormDurationMode(StormScalingMode.UseDayLength);
+                            return false;
+                        }
+
+                        if (float.TryParse(arg, out float durationMultiplier))
+                        {
+                            OrbitalCommands.SetStormDurationCustom(durationMultiplier);
+                            return false;
+                        }
+                    }
+                }
+
+                ConsoleWindow.Print("Usage:", ConsoleColor.Yellow, false, false, false);
+                ConsoleWindow.Print("  storms                    - Show current storm settings", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  storms duration off       - Disable storm duration scaling", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  storms duration on        - Scale duration by day length", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print("  storms duration <value>   - Custom duration multiplier", ConsoleColor.Gray, false, false, false);
+                return false;
+            }
+
             return true;
         }
 
@@ -222,6 +274,7 @@ namespace BeefsLongerOrbitalPeriods
             BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  plants growth off|on|<value> - Control growth speed scaling");
             BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  plants light on|off - Toggle light/dark requirement scaling");
             BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  daynight [percent] - Control day/night ratio");
+            BeefsLongerOrbitalPeriodsPlugin.Log.LogInfo("  storms - Show or configure storm scaling");
         }
     }
 
@@ -446,6 +499,23 @@ namespace BeefsLongerOrbitalPeriods
 
             ConsoleWindow.Print($"Plant Growth Scaling: {growthDesc}", ConsoleColor.White, false, false, false);
             ConsoleWindow.Print($"Plant Light/Dark Scaling: {(lightScaling ? "Enabled" : "Disabled")}", ConsoleColor.White, false, false, false);
+
+            StormScalingMode stormMode = BeefsLongerOrbitalPeriodsPlugin.StormDurationMode.Value;
+            float stormMultiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveStormDurationMultiplier();
+            string stormDesc;
+            if (stormMode == StormScalingMode.Disabled)
+            {
+                stormDesc = "Disabled";
+            }
+            else if (stormMode == StormScalingMode.UseDayLength)
+            {
+                stormDesc = $"Using Day Length ({stormMultiplier}x)";
+            }
+            else
+            {
+                stormDesc = $"Custom ({BeefsLongerOrbitalPeriodsPlugin.StormDurationCustomMultiplier.Value}x)";
+            }
+            ConsoleWindow.Print($"Storm Duration Scaling: {stormDesc}", ConsoleColor.White, false, false, false);
         }
 
         public static void ShowDayNightSettings()
@@ -524,5 +594,104 @@ namespace BeefsLongerOrbitalPeriods
             ConsoleWindow.Print($"  -> Day speed: {daySpeed:F2}x | Night speed: {nightSpeed:F2}x", ConsoleColor.Gray, false, false, false);
         }
 
+        public static void ShowStormSettings()
+        {
+            StormScalingMode durationMode = BeefsLongerOrbitalPeriodsPlugin.StormDurationMode.Value;
+            float dayMultiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveDayLengthMultiplier();
+            float stormMultiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveStormDurationMultiplier();
+
+            ConsoleWindow.Print("=== Storm Scaling Settings ===", ConsoleColor.Yellow, false, false, false);
+            ConsoleWindow.Print($"Current day length multiplier: {dayMultiplier}x", ConsoleColor.White, false, false, false);
+            ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
+
+            // Duration mode
+            if (durationMode == StormScalingMode.Disabled)
+            {
+                ConsoleWindow.Print("Storm Duration Scaling: DISABLED", ConsoleColor.Red, false, false, false);
+                ConsoleWindow.Print("  -> Storms use vanilla duration", ConsoleColor.Gray, false, false, false);
+            }
+            else if (durationMode == StormScalingMode.UseDayLength)
+            {
+                ConsoleWindow.Print("Storm Duration Scaling: ENABLED (using day length)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"  -> Storms last {stormMultiplier}x longer than vanilla", ConsoleColor.Gray, false, false, false);
+            }
+            else if (durationMode == StormScalingMode.Custom)
+            {
+                ConsoleWindow.Print("Storm Duration Scaling: ENABLED (custom)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"  -> Storms last {stormMultiplier}x longer than vanilla", ConsoleColor.Gray, false, false, false);
+            }
+
+            ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
+
+            // Current weather state
+            if (WeatherManager.IsWeatherEventRunning && WeatherManager.CurrentWeatherEvent != null)
+            {
+                float remaining = WeatherManager.WeatherEventLength + WeatherManager.WeatherStartTime - GameManager.GameTime;
+                ConsoleWindow.Print($"Current storm: {WeatherManager.CurrentWeatherEvent.Name} (ACTIVE)", ConsoleColor.Cyan, false, false, false);
+                ConsoleWindow.Print($"  -> Duration: {WeatherManager.WeatherEventLength:F0}s, Remaining: {remaining:F0}s", ConsoleColor.Gray, false, false, false);
+            }
+            else if (WeatherManager.IsWeatherEventScheduled && WeatherManager.CurrentWeatherEvent != null)
+            {
+                float untilStart = WeatherManager.WeatherStartTime - GameManager.GameTime;
+                ConsoleWindow.Print($"Next storm: {WeatherManager.CurrentWeatherEvent.Name} (SCHEDULED)", ConsoleColor.Cyan, false, false, false);
+                ConsoleWindow.Print($"  -> Starts in: {untilStart:F0}s, Duration: {WeatherManager.WeatherEventLength:F0}s", ConsoleColor.Gray, false, false, false);
+            }
+            else
+            {
+                ConsoleWindow.Print("No storm scheduled or active", ConsoleColor.Gray, false, false, false);
+                ConsoleWindow.Print($"  -> Days since last: {WeatherManager.DaysSinceLastWeatherEvent}, Cooldown: {WeatherManager.LastEventCoolDown} days", ConsoleColor.Gray, false, false, false);
+            }
+        }
+
+        public static void SetStormDurationMode(StormScalingMode mode)
+        {
+            if (NetworkManager.NetworkRole == NetworkRole.Client)
+            {
+                ConsoleWindow.Print("Cannot change storm settings as client connected to server.", ConsoleColor.Red, false, false, false);
+                return;
+            }
+
+            BeefsLongerOrbitalPeriodsPlugin.StormDurationMode.Value = mode;
+
+            if (mode == StormScalingMode.Disabled)
+            {
+                ConsoleWindow.Print("Storm duration scaling DISABLED - vanilla storm length", ConsoleColor.Green, false, false, false);
+            }
+            else if (mode == StormScalingMode.UseDayLength)
+            {
+                float multiplier = BeefsLongerOrbitalPeriodsPlugin.GetEffectiveStormDurationMultiplier();
+                ConsoleWindow.Print("Storm duration scaling ENABLED (using day length)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"Storms will last {multiplier}x longer", ConsoleColor.Yellow, false, false, false);
+            }
+            else if (mode == StormScalingMode.Custom)
+            {
+                float multiplier = BeefsLongerOrbitalPeriodsPlugin.StormDurationCustomMultiplier.Value;
+                ConsoleWindow.Print("Storm duration scaling ENABLED (custom)", ConsoleColor.Green, false, false, false);
+                ConsoleWindow.Print($"Storms will last {multiplier}x longer", ConsoleColor.Yellow, false, false, false);
+            }
+        }
+
+        public static void SetStormDurationCustom(float multiplier)
+        {
+            if (NetworkManager.NetworkRole == NetworkRole.Client)
+            {
+                ConsoleWindow.Print("Cannot change storm settings as client connected to server.", ConsoleColor.Red, false, false, false);
+                return;
+            }
+
+            if (multiplier <= 0)
+            {
+                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false, false);
+                return;
+            }
+
+            multiplier = Mathf.Clamp(multiplier, 0.01f, 100.0f);
+
+            BeefsLongerOrbitalPeriodsPlugin.StormDurationMode.Value = StormScalingMode.Custom;
+            BeefsLongerOrbitalPeriodsPlugin.StormDurationCustomMultiplier.Value = multiplier;
+
+            ConsoleWindow.Print("Storm duration scaling set to CUSTOM", ConsoleColor.Green, false, false, false);
+            ConsoleWindow.Print($"Storms will last {multiplier}x longer", ConsoleColor.Yellow, false, false, false);
+        }
     }
 }

@@ -264,7 +264,8 @@ namespace BeefsLongerOrbitalPeriods
             try
             {
                 Gene gene = (Gene)_geneField.GetValue(__instance);
-                if (gene == Gene.LightPerDay || gene == Gene.DarkPerDay)
+                if (gene == Gene.LightPerDay || gene == Gene.DarkPerDay ||
+                    gene == Gene.LightTolerance || gene == Gene.DarknessTolerance)
                 {
                     __result *= multiplier;
                 }
@@ -329,7 +330,13 @@ namespace BeefsLongerOrbitalPeriods
                 __instance.LightPerDay.Max,
                 __instance.DarknessPerDay.Base,
                 __instance.DarknessPerDay.Min,
-                __instance.DarknessPerDay.Max
+                __instance.DarknessPerDay.Max,
+                __instance.TimeUntilLightDamage.Base,
+                __instance.TimeUntilLightDamage.Min,
+                __instance.TimeUntilLightDamage.Max,
+                __instance.TimeUntilDarknessDamage.Base,
+                __instance.TimeUntilDarknessDamage.Min,
+                __instance.TimeUntilDarknessDamage.Max
             };
 
             try
@@ -345,6 +352,14 @@ namespace BeefsLongerOrbitalPeriods
                 baseSetter.Invoke(__instance.DarknessPerDay, new object[] { __state[3] * multiplier });
                 minSetter.Invoke(__instance.DarknessPerDay, new object[] { __state[4] * multiplier });
                 maxSetter.Invoke(__instance.DarknessPerDay, new object[] { __state[5] * multiplier });
+
+                baseSetter.Invoke(__instance.TimeUntilLightDamage, new object[] { __state[6] * multiplier });
+                minSetter.Invoke(__instance.TimeUntilLightDamage, new object[] { __state[7] * multiplier });
+                maxSetter.Invoke(__instance.TimeUntilLightDamage, new object[] { __state[8] * multiplier });
+
+                baseSetter.Invoke(__instance.TimeUntilDarknessDamage, new object[] { __state[9] * multiplier });
+                minSetter.Invoke(__instance.TimeUntilDarknessDamage, new object[] { __state[10] * multiplier });
+                maxSetter.Invoke(__instance.TimeUntilDarknessDamage, new object[] { __state[11] * multiplier });
             }
             catch
             {
@@ -373,6 +388,14 @@ namespace BeefsLongerOrbitalPeriods
                 baseSetter.Invoke(__instance.DarknessPerDay, new object[] { __state[3] });
                 minSetter.Invoke(__instance.DarknessPerDay, new object[] { __state[4] });
                 maxSetter.Invoke(__instance.DarknessPerDay, new object[] { __state[5] });
+
+                baseSetter.Invoke(__instance.TimeUntilLightDamage, new object[] { __state[6] });
+                minSetter.Invoke(__instance.TimeUntilLightDamage, new object[] { __state[7] });
+                maxSetter.Invoke(__instance.TimeUntilLightDamage, new object[] { __state[8] });
+
+                baseSetter.Invoke(__instance.TimeUntilDarknessDamage, new object[] { __state[9] });
+                minSetter.Invoke(__instance.TimeUntilDarknessDamage, new object[] { __state[10] });
+                maxSetter.Invoke(__instance.TimeUntilDarknessDamage, new object[] { __state[11] });
             }
             catch
             { }

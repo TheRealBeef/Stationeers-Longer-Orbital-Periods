@@ -78,17 +78,38 @@ This works by speeding up or slowing down the entire orbital simulation dependin
 - `daynight <percent>` - Set day percent (1-99)
 - `daynight on|off` - Enable/disable applying day/night ratio
 
+## Storm Scaling
+
+By default, storm duration scales with day length so storms take up the same proportional time as vanilla.
+
+Three duration modes are available:
+- Disabled - Vanilla storm duration
+- UseDayLength - Storm duration scales with day length multiplier (default)
+- Custom - Use a separate multiplier just for storm duration (with multiplier at 100 you can have storms which last anywhere from 3 to 16 hours)
+
+Vanilla storms are between 2 and 10 minutes
+
+### Commands
+
+- `storms` - Show current storm settings and weather state
+- `storms duration off` - Disable storm duration scaling (vanilla)
+- `storms duration on` - Scale duration by day length
+- `storms duration <value>` - Use custom duration multiplier
+
 ## Notes
-- This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
 - The orbital period change is server-side only - clients do not need the mod for day/night cycle changes.
 - Plant scaling changes are currently applied (to the best of my knowledge) server-side only. If plant growth is not syncing correctly in multiplayer with plant scaling enabled, clients may also need the mod installed.
 
 ## Changelog
+>### Version 3.2.0:
+>- Add storm duration scaling so storms last longer if days are longer and shorter if days are shorter
+>- Storm start times are capped so they start even with very short time periods
+>- Fix plants dying from light/dark damage accumulating even though they want more light/dark
+
 >### Version 3.1.1:
 >- Fix plant time scaling so that it isn't accumulating both light and dark deficiency simultaneously
 >- Min/max in plant genetics overview now displays proper values
 >- Stationpedia should display proper times for growth time / light/dark values etc based on settings
-
 
 >### Version 3.1.0:
 >- Add ability to adjust day/night ratio for changing how much of each cycle is day vs night
