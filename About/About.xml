@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Name>Beef's Longer Orbital Periods</Name>
     <Author>TheRealBeef</Author>
-    <Version>3.1.1</Version>
+    <Version>3.2.0</Version>
 
     <Description>
         [h1]Beef's Longer Orbital Periods[/h1]
@@ -68,12 +68,31 @@
         - [b]daynight [i]percent[/i][/b] - Set day percent (1-99)
         - [b]daynight on|off[/b] - Enable/disable day/night ratio
 
-        [b]Note:[/b] This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
+        [h2]Storm Scaling[/h2]
+
+        By default, storm duration scales with day length so storms take up the same proportional time as vanilla. Vanilla storms are between 2 and 10 minutes.
+
+        Three duration modes are available:
+        - [b]Disabled[/b] - Vanilla storm duration
+        - [b]UseDayLength[/b] - Storm duration scales with day length multiplier (default)
+        - [b]Custom[/b] - Use a separate multiplier just for storm duration
+
+        [b]Storm Commands[/b]
+
+        - [b]storms[/b] - Show current storm settings and weather state
+        - [b]storms duration off[/b] - Disable storm duration scaling (vanilla)
+        - [b]storms duration on[/b] - Scale duration by day length
+        - [b]storms duration [i]value[/i][/b] - Use custom duration multiplier
 
         Source Code: https://github.com/TheRealBeef/Stationeers-Longer-Orbital-Periods
     </Description>
 
     <ChangeLog>
+        3.2.0
+        - Add storm duration scaling so storms last longer if days are longer and shorter if days are shorter
+        - Storm start times are capped so they start even with very short time periods
+        - Fix plants dying from light/dark damage accumulating even though they want more light/dark
+
         3.1.1
         - Fix plant time scaling so that it isn't accumulating both light and dark deficiency simultaneously
         - Min/max in plant genetics overview now displays proper values
@@ -151,7 +170,14 @@ By default, the mod uses an equal day/night cycle (50/50). You can change the ra
 - <b>daynight <i>percent</i></b> - Set day percent (1-99)
 - <b>daynight on|off</b> - Enable/disable
 
-<b>Note:</b> This mod only affects the sun's orbital period and does not change the duration or frequency of storms.
+<b>Storm Scaling:</b>
+By default, storm duration scales with day length so storms take up the same proportional time as vanilla. Vanilla storms are between 2 and 10 minutes.
+
+<b>Storm Commands:</b>
+- <b>storms</b> - Show current storm settings and weather state
+- <b>storms duration off</b> - Disable storm duration scaling (vanilla)
+- <b>storms duration on</b> - Scale duration by day length
+- <b>storms duration <i>value</i></b> - Use custom duration multiplier
 ]]>
     </InGameDescription>
 </ModMetadata>
