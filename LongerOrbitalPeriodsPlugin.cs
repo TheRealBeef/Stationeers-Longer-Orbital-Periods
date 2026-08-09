@@ -45,6 +45,11 @@ namespace BeefsLongerOrbitalPeriods
         public static ConfigEntry<float> StormDurationCustomMultiplier;
         public static ManualLogSource Log;
 
+        public const float MinMultiplier = 0.001f;
+        public const float MaxDayLengthMultiplier = 300.0f;
+        public const float MaxPlantGrowthMultiplier = 100.0f;
+        public const float MaxStormDurationMultiplier = 100.0f;
+
         public static readonly float PresetMoon = 29.53f;
         public static readonly float PresetMars = 1.027f;
         public static readonly float PresetEuropa = 3.551f;
@@ -172,8 +177,9 @@ namespace BeefsLongerOrbitalPeriods
                 new ConfigDescription(
                     "Custom day length multiplier (only used when Preset is 'Custom').\n" +
                     "Base day/night cycle is 20 minutes.\n" +
-                    "Examples: 0.5x = 10min, 1x = 20min, 3x = 1hr, 6x = 2hr",
-                    new AcceptableValueRange<float>(0.01f, 100.0f)));
+                    "Examples: 0.5x = 10min, 1x = 20min, 3x = 1hr, 6x = 2hr, 72x = 24hr\n" +
+                    $"Range: {MinMultiplier}x to {MaxDayLengthMultiplier}x",
+                    new AcceptableValueRange<float>(MinMultiplier, MaxDayLengthMultiplier)));
 
             PlantGrowthModeConfig = Config.Bind(
                 "2. Plant Growth",
@@ -191,8 +197,9 @@ namespace BeefsLongerOrbitalPeriods
                 3.0f,
                 new ConfigDescription(
                     "Custom plant growth multiplier (only used when Growth Speed Scaling is 'Custom').\n" +
-                    "Plants will grow this many times slower than vanilla.",
-                    new AcceptableValueRange<float>(0.01f, 100.0f)));
+                    "Plants will grow this many times slower than vanilla.\n" +
+                    $"Range: {MinMultiplier}x to {MaxPlantGrowthMultiplier}x",
+                    new AcceptableValueRange<float>(MinMultiplier, MaxPlantGrowthMultiplier)));
 
             ScalePlantLightDark = Config.Bind(
                 "3. Plant Light and Dark",
@@ -235,8 +242,9 @@ namespace BeefsLongerOrbitalPeriods
                 new ConfigDescription(
                     "Custom storm duration multiplier (only used when Storm Duration Mode is 'Custom').\n" +
                     "Storms will last this many times longer than vanilla.\n" +
-                    "Game default storms are 2min - 10min long",
-                    new AcceptableValueRange<float>(0.01f, 100.0f)));
+                    "Game default storms are 2min - 10min long\n" +
+                    $"Range: {MinMultiplier}x to {MaxStormDurationMultiplier}x",
+                    new AcceptableValueRange<float>(MinMultiplier, MaxStormDurationMultiplier)));
 
             float dayMultiplier = GetEffectiveDayLengthMultiplier();
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_NAME} loaded");

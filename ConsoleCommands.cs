@@ -21,6 +21,24 @@ namespace BeefsLongerOrbitalPeriods
             { "real-mimas",  DayLengthPreset.RealMimas }
         };
 
+        private static bool TryParseNumber(string text, out float value)
+        {
+            value = 0f;
+
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            string normalized = text.Trim().Replace(',', '.');
+
+            return float.TryParse(
+                normalized,
+                System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out value);
+        }
+
         [HarmonyPatch(typeof(Util.Commands.CommandLine), "Process", new Type[] { typeof(string) })]
         [HarmonyPrefix]
         static bool InterceptConsoleCommands(string input)
@@ -59,7 +77,7 @@ namespace BeefsLongerOrbitalPeriods
                     }
 
                     // otherwise sets to custom mode and parses as number
-                    if (float.TryParse(arg, out float multiplier))
+                    if (TryParseNumber(arg, out float multiplier))
                     {
                         OrbitalCommands.SetCustomMultiplier(multiplier);
                         return false;
@@ -97,7 +115,7 @@ namespace BeefsLongerOrbitalPeriods
                     return false;
                 }
 
-                if (float.TryParse(arg, out float percent))
+                if (TryParseNumber(arg, out float percent))
                 {
                     OrbitalCommands.SetDayPercent(percent);
                     return false;
@@ -150,7 +168,7 @@ namespace BeefsLongerOrbitalPeriods
                         // plants growth custom ...
                         if (arg == "custom")
                         {
-                            if (parts.Length == 4 && float.TryParse(parts[3], out float customValue))
+                            if (parts.Length == 4 && TryParseNumber(parts[3], out float customValue))
                             {
                                 OrbitalCommands.SetPlantGrowthCustom(customValue);
                             }
@@ -162,7 +180,7 @@ namespace BeefsLongerOrbitalPeriods
                         }
 
                         // plants growth ...
-                        if (float.TryParse(arg, out float growthMultiplier))
+                        if (TryParseNumber(arg, out float growthMultiplier))
                         {
                             OrbitalCommands.SetPlantGrowthCustom(growthMultiplier);
                             return false;
@@ -230,7 +248,7 @@ namespace BeefsLongerOrbitalPeriods
                             return false;
                         }
 
-                        if (float.TryParse(arg, out float durationMultiplier))
+                        if (TryParseNumber(arg, out float durationMultiplier))
                         {
                             OrbitalCommands.SetStormDurationCustom(durationMultiplier);
                             return false;
@@ -257,7 +275,8 @@ namespace BeefsLongerOrbitalPeriods
             ConsoleWindow.Print("time <preset>         - Use real-world preset", ConsoleColor.Green, false, false, false);
             ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
             ConsoleWindow.Print("=== Custom ===", ConsoleColor.Cyan, false, false, false);
-            ConsoleWindow.Print("0.5x = 10min | 1x = 20min | 3x = 1hr (default) | 6x = 2hr", ConsoleColor.Gray, false, false, false);
+            ConsoleWindow.Print("0.5x = 10min | 1x = 20min | 3x = 1hr (default) | 6x = 2hr | 72x = 24hr", ConsoleColor.Gray, false, false, false);
+            ConsoleWindow.Print($"Allowed range: {BeefsLongerOrbitalPeriodsPlugin.MinMultiplier}x to {BeefsLongerOrbitalPeriodsPlugin.MaxDayLengthMultiplier}x", ConsoleColor.Gray, false, false, false);
             ConsoleWindow.Print("", ConsoleColor.White, false, false, false);
             ConsoleWindow.Print("=== Presets ===", ConsoleColor.Cyan, false, false, false);
             ConsoleWindow.Print("time real-moon   - 29.53x (~10 hours)", ConsoleColor.Gray, false, false, false);
@@ -314,11 +333,23 @@ namespace BeefsLongerOrbitalPeriods
             ConsoleWindow.Print($"Multiplier: {multiplier}x, Day Length: {timeDesc}", ConsoleColor.Green, false, false, false);
         }
 
+        private const float MinMult = BeefsLongerOrbitalPeriodsPlugin.MinMultiplier;
+
+        private static bool ValidateMultiplier(float multiplier, float maxMultiplier)
+        {
+            if (float.IsNaN(multiplier) || float.IsInfinity(multiplier) || multiplier < MinMult || multiplier > maxMultiplier)
+            {
+                ConsoleWindow.Print($"Invalid multiplier. Must be between {MinMult} and {maxMultiplier}.", ConsoleColor.Red, false, false, false);
+                return false;
+            }
+
+            return true;
+        }
+
         public static void SetCustomMultiplier(float multiplier)
         {
-            if (multiplier <= 0)
+            if (!ValidateMultiplier(multiplier, BeefsLongerOrbitalPeriodsPlugin.MaxDayLengthMultiplier))
             {
-                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false, false);
                 return;
             }
 
@@ -327,8 +358,6 @@ namespace BeefsLongerOrbitalPeriods
                 ConsoleWindow.Print("Cannot change orbital settings as client connected to server.", ConsoleColor.Red, false, false, false);
                 return;
             }
-
-            multiplier = Mathf.Clamp(multiplier, 0.01f, 100.0f);
 
             BeefsLongerOrbitalPeriodsPlugin.DayLengthPresetConfig.Value = DayLengthPreset.Custom;
             BeefsLongerOrbitalPeriodsPlugin.CustomDayLengthMultiplier.Value = multiplier;
@@ -376,13 +405,10 @@ namespace BeefsLongerOrbitalPeriods
                 return;
             }
 
-            if (multiplier <= 0)
+            if (!ValidateMultiplier(multiplier, BeefsLongerOrbitalPeriodsPlugin.MaxPlantGrowthMultiplier))
             {
-                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false, false);
                 return;
             }
-
-            multiplier = Mathf.Clamp(multiplier, 0.01f, 100.0f);
 
             BeefsLongerOrbitalPeriodsPlugin.PlantGrowthModeConfig.Value = PlantGrowthMode.Custom;
             BeefsLongerOrbitalPeriodsPlugin.PlantGrowthCustomMultiplier.Value = multiplier;
@@ -679,13 +705,10 @@ namespace BeefsLongerOrbitalPeriods
                 return;
             }
 
-            if (multiplier <= 0)
+            if (!ValidateMultiplier(multiplier, BeefsLongerOrbitalPeriodsPlugin.MaxStormDurationMultiplier))
             {
-                ConsoleWindow.Print("Invalid multiplier. Must be greater than 0.", ConsoleColor.Red, false, false, false);
                 return;
             }
-
-            multiplier = Mathf.Clamp(multiplier, 0.01f, 100.0f);
 
             BeefsLongerOrbitalPeriodsPlugin.StormDurationMode.Value = StormScalingMode.Custom;
             BeefsLongerOrbitalPeriodsPlugin.StormDurationCustomMultiplier.Value = multiplier;

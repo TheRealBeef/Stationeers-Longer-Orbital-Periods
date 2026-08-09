@@ -25,7 +25,7 @@ namespace BeefsLongerOrbitalPeriods
                 return;
             }
 
-            __result = Mathf.RoundToInt(__result * multiplier);
+            __result = Mathf.Max(1, Mathf.RoundToInt(__result * multiplier));
         }
     }
     public static class PlantGrowthTimeScaler

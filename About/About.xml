@@ -2,7 +2,7 @@
 <ModMetadata xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Name>Beef's Longer Orbital Periods</Name>
     <Author>TheRealBeef</Author>
-    <Version>3.2.0</Version>
+    <Version>3.2.1</Version>
 
     <Description>
         [h1]Beef's Longer Orbital Periods[/h1]
@@ -88,6 +88,9 @@
     </Description>
 
     <ChangeLog>
+        3.2.1
+        - Adjust min/max values allowed
+
         3.2.0
         - Add storm duration scaling so storms last longer if days are longer and shorter if days are shorter
         - Storm start times are capped so they start even with very short time periods
