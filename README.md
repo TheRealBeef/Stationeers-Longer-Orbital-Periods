@@ -101,6 +101,9 @@ Vanilla storms are between 2 and 10 minutes
 - Plant scaling changes are currently applied (to the best of my knowledge) server-side only. If plant growth is not syncing correctly in multiplayer with plant scaling enabled, clients may also need the mod installed.
 
 ## Changelog
+>### Version 3.2.2:
+> - Build against Power Line update
+
 >### Version 3.2.1:
 >- Adjust min/max values allowed
 

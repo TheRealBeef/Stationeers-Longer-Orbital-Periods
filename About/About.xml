@@ -88,6 +88,9 @@
     </Description>
 
     <ChangeLog>
+        3.2.2
+        - Build against Power Line update
+
         3.2.1
         - Adjust min/max values allowed
 
